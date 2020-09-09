@@ -18,6 +18,7 @@ def main():
         output["tests"].append({
             "name": os.path.splitext(att["lecture_file"])[0],
             "score": int(att["attended"]),
+            "max_score": 1,
             "output": dedent(f"""\
                 Lecture: {os.path.splitext(att["lecture_file"])[0]}
                 Attended in-person: {att["attended_in_person"]}
