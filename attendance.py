@@ -24,7 +24,7 @@ def main():
     registration = pd.read_csv(ZOOM_REGISTRATION_PATH)
     registration["Name"] = registration.apply(lambda row: row["First Name"] + " " + row["Last Name"], axis=1)
 
-    for fn in os.listdir(ATTENDANCE_LISTS_DIR):
+    for fn in sorted(os.listdir(ATTENDANCE_LISTS_DIR)):
         fp = os.path.join(ATTENDANCE_LISTS_DIR, fn)
         with open(fp) as f:
             attendees = f.readlines()
