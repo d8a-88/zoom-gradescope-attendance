@@ -60,7 +60,7 @@ def main():
 
         if sum(registration[f"attended_{fn}"]) < len(attendees):
             print(f"Some attendees in {fn} not found in registrants")
-            print([att for att in attendees if att not in registration["Name"]])
+            print([att for att in attendees if att not in registration["Name"].tolist()])
             print(registration)
             sys.exit(1)
 
