@@ -15,18 +15,32 @@ def main():
     output["tests"] = []
 
     for att in subm:
-        output["tests"].append({
-            "name": os.path.splitext(att["lecture_file"])[0],
-            "score": int(att["attended"]),
-            "max_score": 1,
-            "output": dedent(f"""\
-                Lecture: {os.path.splitext(att["lecture_file"])[0]}
-                Attended in-person: {att["attended_in_person"]}
-                Quiz score (%): {att["quiz_score"]}
-                -------------------------------------------------------
-                Earned attendance credit: {att["attended"]}
-            """)
-        })
+        if "freebie" in att:
+            output["tests"].append({
+                "name": os.path.splitext(att["lecture_file"])[0],
+                "score": int(att["attended"]),
+                "max_score": 1,
+                "output": dedent(f"""\
+                    Lecture: {os.path.splitext(att["lecture_file"])[0]}
+                    Freebie: {att["freebie"]}
+                    -------------------------------------------------------
+                    Earned attendance credit: {att["attended"]}
+                """)
+            })
+        
+        else:
+            output["tests"].append({
+                "name": os.path.splitext(att["lecture_file"])[0],
+                "score": int(att["attended"]),
+                "max_score": 1,
+                "output": dedent(f"""\
+                    Lecture: {os.path.splitext(att["lecture_file"])[0]}
+                    Attended in-person: {att["attended_in_person"]}
+                    Quiz score (%): {att["quiz_score"]}
+                    -------------------------------------------------------
+                    Earned attendance credit: {att["attended"]}
+                """)
+            })
 
     with open("/autograder/results/results.json", "w+") as f:
         json.dump(output, f, indent=2)
