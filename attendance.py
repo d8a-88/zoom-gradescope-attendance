@@ -10,10 +10,9 @@ from otter.generate.token import APIClient
 # create and fill in this file
 import config
 
+# zoom participants export: https://csuf.screenstepslive.com/s/12867/m/59146/l/1219888-taking-attendance-in-a-zoom-meeting
 
-# set these 3 variableas
-# ZOOM_REGISTRATION_PATH = "data/zoom_registration.csv"
-# ATTENDANCE_LISTS_DIR = "data/zoom_attendance_data"
+# set these 3 variables
 ATTENDANCE_CSVS_DIR = "data/zoom_sp21"
 QUIZ_DATA_DIR = "data/gs_sp21"
 COURSE_ID = config.COURSE_ID
