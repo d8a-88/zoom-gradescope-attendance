@@ -33,9 +33,9 @@ def main():
     emails = set()
     quiz_dfs = []
     for fn in sorted(os.listdir(QUIZ_DATA_DIR)):
-        fp = os.path.joni(QUIZ_DATA_DIR, fn)
+        fp = os.path.join(QUIZ_DATA_DIR, fn)
         df = pd.read_csv(fp)
-        emails |= df["Email"]
+        emails |= set(df["Email"])
         quiz_dfs.append(df)
 
     emails = list(sorted(emails))
@@ -82,6 +82,7 @@ def main():
             students[f"attended_in_person_{fn}"] = students["Email"].isin(zoom_attendees["User Email"])
             students[f"attended_{fn}"] = students[f"attended_in_person_{fn}"]
             students.loc[~students[f"attended_in_person_{fn}"] & (students[f"quiz_score_{fn}"] >= QUIZ_SCORE_CUTOFF), f"attended_{fn}"] = True
+            students[f"quiz_score_{fn}"] = students[f"quiz_score_{fn}"].fillna("missing")
 
             # registration.loc[~registration[f"attended_in_person_{fn}"] & (registration[f"quiz_score_{fn}"] >= 0.8), f"attended_{fn}"] = True        
 
