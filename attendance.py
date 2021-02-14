@@ -33,6 +33,8 @@ def main():
     emails = set()
     quiz_dfs = []
     for fn in sorted(os.listdir(QUIZ_DATA_DIR)):
+        if fn.startswith("."):
+            continue
         fp = os.path.join(QUIZ_DATA_DIR, fn)
         df = pd.read_csv(fp)
         emails |= set(df["Email"])
@@ -80,7 +82,7 @@ def main():
             lec_quiz_scores = students.apply(get_quiz_score, axis=1)
             students[f"quiz_score_{fn}"]  = lec_quiz_scores
             students[f"attended_in_person_{fn}"] = students["Email"].isin(zoom_attendees["User Email"])
-            students[f"attended_{fn}"] = students[f"attended_in_person_{fn}"]
+            students[f"attended_{fn}"] = students[f"attended_in_person_{fn}"] & ~students[f"quiz_score_{fn}"].isna()
             students.loc[~students[f"attended_in_person_{fn}"] & (students[f"quiz_score_{fn}"] >= QUIZ_SCORE_CUTOFF), f"attended_{fn}"] = True
             students[f"quiz_score_{fn}"] = students[f"quiz_score_{fn}"].fillna("missing")
 
@@ -96,7 +98,7 @@ def main():
                     "quiz_score": row[f"quiz_score_{fn}"],
                 })
 
-            if sum(students[f"attended_{fn}"]) < len(attendees):
+            if sum(students[f"attended_{fn}"]) < len(attendees) - sum(students[f"quiz_score_{fn}"] == "missing"):
                 print(f"Some attendees in {fn} not found in registrants")
                 print(zoom_attendees[~zoom_attendees["User Email"].isin(students["Email"])])
                 print(students)
