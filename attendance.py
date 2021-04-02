@@ -5,6 +5,7 @@ import glob
 import tempfile
 import pandas as pd
 import numpy as np
+from tqdm import tqdm
 from otter.generate.token import APIClient
 
 # create and fill in this file
@@ -121,8 +122,7 @@ def main():
     client = APIClient(token=token)
     del token
 
-
-    for email, subm in SUBMISSIONS.items():
+    for email, subm in tqdm(SUBMISSIONS.items()):
         with open("attendance.json", "w+") as f:
             json.dump(subm, f, indent=2)
 
@@ -132,7 +132,7 @@ def main():
 
         os.remove("attendance.json")
         
-        print(f"Uploaded submission for {email}")
+        # print(f"Uploaded submission for {email}")
 
 
 if __name__ == "__main__":
